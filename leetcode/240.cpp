@@ -7,23 +7,9 @@ public:
         int m = matrix.size();
         int n = matrix[0].size();
 
-        // find ceil of y index
-        int i = 0;
-        for (; i < m; i++) {
-            if (matrix[i][0] == target) return true;
-            if (matrix[i][0] > target) break;
-        }
-
-        if (i == 0) return false;
-        i--;
-
-        // find ceil of x index
+        // Start the search from down left
+        int i = m - 1;
         int j = 0;
-        for (; j < n; j++) {
-            if (matrix[i][j] == target) return true;
-            if (matrix[i][j] > target) break;
-        }
-
         while (i >= 0 && j < n) {
             if (matrix[i][j] > target) {
                 i--;
