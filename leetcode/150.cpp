@@ -1,41 +1,43 @@
 #include <vector>
-#include <stack>
-#include <algorithm>
 #include <string>
-#include <ctype.h>
+#include <stack>
 using namespace std;
 
 class Solution {
 public:
     int evalRPN(vector<string>& tokens) {
-        stack<int> s;
+        stack<int> stk;
 
-        for_each(tokens.begin(), tokens.end(), [&](string t) {
-            if (isdigit(t[0]) || (t.size() > 1 && t[0] == '-' && isdigit(t[1]))) {
-                s.push(stoi(t));
+        for (string tok : tokens) {
+            if (tok[0] == '+') {
+                int rightVal = stk.top();
+                stk.pop();
+                int leftVal = stk.top();
+                stk.pop();
+                stk.push(leftVal + rightVal);
+            } else if (tok[0] == '-' && tok.length() == 1) {
+                int rightVal = stk.top();
+                stk.pop();
+                int leftVal = stk.top();
+                stk.pop();
+                stk.push(leftVal - rightVal);
+            } else if (tok[0] == '*') {
+                int rightVal = stk.top();
+                stk.pop();
+                int leftVal = stk.top();
+                stk.pop();
+                stk.push(leftVal * rightVal);
+            } else if (tok[0] == '/') {
+                int rightVal = stk.top();
+                stk.pop();
+                int leftVal = stk.top();
+                stk.pop();
+                stk.push(leftVal / rightVal);
             } else {
-                int operand2 = s.top();
-                s.pop();
-                int operand1 = s.top();
-                s.pop();
-
-                switch (t[0]) {
-                    case '+':
-                        s.push(operand1 + operand2);
-                        break;
-                    case '-':
-                        s.push(operand1 - operand2);
-                        break;
-                    case '*':
-                        s.push(operand1 * operand2);
-                        break;
-                    case '/':
-                        s.push(operand1 / operand2);
-                        break;
-                }
+                stk.push(stoi(tok));
             }
-        });
+        }
 
-        return s.top();
+        return stk.top();
     }
 };
