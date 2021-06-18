@@ -35,3 +35,25 @@ public:
         return ans;
     }
 };
+
+// DP
+class Solution {
+public:
+    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {
+        int dp = 0;
+        int prev = -1;
+        int ans = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] < left) {
+                ans += dp;
+            } else if (nums[i] > right) {
+                dp = 0;
+                prev = i;
+            } else {
+                dp = i - prev;
+                ans += dp;
+            }
+        }
+        return ans;
+    }
+};
